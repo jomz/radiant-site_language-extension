@@ -1,0 +1,2 @@
+- form_for :page, @page, :url => translated_admin_page_url(:id => @page, :language => (params[:language]||SiteLanguage.default), :action => 'update'), :html => {:method => :put, :multipart => true, :id => 'edit_page'} do |fields|
+  = render :partial => "fields", :object => fields

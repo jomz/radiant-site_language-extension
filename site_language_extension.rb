@@ -30,6 +30,9 @@ class SiteLanguageExtension < Radiant::Extension
       raise SiteLanguageError, "Globalize does not appear to be installed."
     end
     enhance_classes
+    
+    admin.page.edit.add :main, 'page_edit_form_with_translated_target_url', :before => 'edit_form'
+    admin.page.edit.main.delete('edit_form')
   end
   
   def deactivate
