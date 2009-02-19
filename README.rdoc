@@ -1,0 +1,59 @@
+= Site Language
+
+THIS EXTENSION IS NOT WORKING AT THE MOMENT.
+If you are still working with Radiant < 0.7, you can check out
+http://github.com/jomz/site_language/commits/pre-radiant-0.7
+
+Allows you to translate pages (title, slug, keywords, ...), page parts and snippets, using the globalize plugin.
+
+== Installation:
+
+1. Install the globalize plugin, preferably from http://github.com/jomz/globalize/tree/master
+2. run
+  
+  rake globalize:setup
+
+3. If you have not installed the extension yet, do a
+
+  rake ray:ext name=site_language full_name=site_language hub=jomz
+  
+  or
+  
+  git submodule add git://github.com/jomz/site_language.git vendor/extensions
+  
+4. Set Radiant::Config["site_language.default_language"] = 'en' or whatever will be the base language of the site.
+This means that when you create a new page, it will be saved as the version for that language.
+When somebody visits an untranslated page, he will also get this default version.
+Beware: changing the default language after you started translating stuff is a big no-no!
+
+5. run
+
+  rake db:migrate:extensions
+  
+6. Start the server and go to the "Languages" tab in the admin, add some language-codes (en-UK, nl-BE, ...)
+
+7. Reboot the server, and translate away!
+
+== Available tags:
+
+  <r:sitelanguages:nav />
+  
+Returns an <ul>-based language navigation. It will put a "current" class on the current language link, and you can hide languages from it by setting so under the Languages tab. 
+The links will go to the translated url of the current page, i.e. not the homepage.
+Also, if you have set up a domain for a certain language, the link will point to the correct domain. 
+
+  <r:langcode />
+  
+Returns the language code for the currently set language.
+
+  <r:sitelanguages:each> .. </r:sitelanguages:each>
+  
+Allows you to loop over each site language
+
+  <r:translated_slug [lang="nl"] />
+  
+Will provide the translated slug of a page
+
+== Overridden tags:
+
+<r:link /> and <r:breadcrumbs/> have been made site_language-aware

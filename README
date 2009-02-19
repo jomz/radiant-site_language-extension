@@ -1,9 +1,0 @@
-= Site Language
-
-Adds the translation of the pages and snippets to Radiant, using the globalize plugin.
-
-- First, install globalize.
-- Second, install this extension, and enable it
-- Third, navigate to the "Site-Language" in the admin, and add some language-codes (en-UK, nl-BE,...)
-
-You're done.
