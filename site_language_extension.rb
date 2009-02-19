@@ -39,13 +39,16 @@ class SiteLanguageExtension < Radiant::Extension
   private
   
   def enhance_classes
-    Admin::PagesController.send :include, SiteLanguage::ControllerExtensions::PageControllerExtensions
-    Admin::SnippetsController.send :include, SiteLanguage::ControllerExtensions::SnippetControllerExtensions
+    Admin::ResourceController.send :include, SiteLanguage::ControllerExtensions::ResourceControllerExtensions
     SiteController.send :include, SiteLanguage::ControllerExtensions::SiteControllerExtensions
     
     Page.send :include, SiteLanguage::PageExtensions
     Page.send :include, SiteLanguageTags
-
+    
+    Page.class_eval do
+      translates :title, :breadcrumb, :slug, :keywords, :description
+    end
+    
     PagePart.class_eval do
       translates :content
     end

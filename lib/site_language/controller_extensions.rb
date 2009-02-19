@@ -1,56 +1,33 @@
 module SiteLanguage::ControllerExtensions
 
-  module PageControllerExtensions
+  module ResourceControllerExtensions
+    
     def self.included(base)
       base.class_eval do
-        before_filter :set_locale, :except => [:index]
-        before_filter :reset_locale, :only => [:index] # To prevent page index screen from showing other-language breadcrumbs
-      end
-    end
-    
-    def reset_locale
-      Locale.set(SiteLanguage.default)
-    end
-    
-    def set_locale
-      Locale.set(params[:language] || SiteLanguage.default)
-    end
-    
-    protected
-    
-    def continue_url(options)
-      options[:redirect_to] || if params[:continue] && defined?(SiteLanguage) && SiteLanguage.count > 0
-          translated_page_edit_url(:id => @page.id, :language => (params[:language] || SiteLanguage.find(:first).code))
-        elsif params[:continue]
-          page_edit_url(:id => @page.id)
-        else
-           page_index_url
-         end
-    end
-  end
-  
-  module SnippetControllerExtensions
-    def self.included(base)
-      base.class_eval do
-        before_filter :set_locale, :except => [:index]
-      end
-    end
-    
-    def set_locale
-      Locale.set(params[:language] || SiteLanguage.default)
-    end
-    
-    protected
-    
-    def continue_url(options)
-      options[:redirect_to] || if params[:continue] && defined?(SiteLanguage) && SiteLanguage.count > 0
-          translated_snippet_edit_url(:id => @snippet.id, :language => (params[:language] || SiteLanguage.find(:first).code))
-        elsif params[:continue]
-          snippet_edit_url(:id => @snippet.id)
-        else
-          snippet_index_url
+        
+        def load_model
+          self.model = if params[:id]
+            #debugger
+            Locale.set(params[:language] || SiteLanguage.default)
+            model_class.find(params[:id])
+          else
+            model_class.new
+          end
         end
+        
+        protected
+  
+        def continue_url(options)
+          options[:redirect_to] || if params[:continue] && SiteLanguage.count > 0
+            {:action => 'edit', :id => model.id, :language => (params[:language] || SiteLanguage.default)}
+            else
+              params[:continue] ? {:action => 'edit', :id => model.id} : {:action => "index"}
+            end
+        end
+        
+      end
     end
+    
   end
   
   module SiteControllerExtensions

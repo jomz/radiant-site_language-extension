@@ -1,9 +1,4 @@
 module SiteLanguage::PageExtensions
-  def self.included(base)
-    base.class_eval {
-      translates :title, :breadcrumb, :slug, :keywords, :description
-    }
-  end
 
   def translated_url(langcode)
     cur_lang = (Locale.active || Locale.base_language).code
