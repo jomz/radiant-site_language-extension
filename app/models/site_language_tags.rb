@@ -37,7 +37,7 @@ module SiteLanguageTags
       else
         domain = "http://#{lang.domain}"
       end
-      link = (lang.code == I18n.locale.to_s) ? lang : "<a href=\"#{domain}#{tag.locals.page.translated_url(lang.code)}\">#{lang}</a>"
+      link = (lang.code == I18n.locale.to_s) ? lang.code : "<a href=\"#{domain}#{tag.locals.page.translated_url(lang.code)}\">#{lang.code}</a>"
       o += "\t<li#{css_class}>#{link}</li>\n"
     end
     codes = SiteLanguage.codes
