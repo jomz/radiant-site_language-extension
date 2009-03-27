@@ -16,8 +16,7 @@ module SiteLanguageTags
 
   tag 'sitelanguages:each:sitelanguage' do |tag|
     lang = tag.locals.language.to_s
-    nice_lang = Locale.new(lang).language.to_s
-    lang == Locale.active.code ? nice_lang : %{<a href="/#{nice_lang.downcase}/">#{nice_lang}</a>} 
+    lang == I18n.locale.to_s ? lang : %{<a href="/#{lang.downcase}/">#{lang.upcase}</a>} 
   end
   
   tag 'sitelanguages:nav' do |tag|
@@ -25,9 +24,8 @@ module SiteLanguageTags
     langs = SiteLanguage.find(:all)
     langs.each do |lang|
       next unless lang.show_in_langnav
-      nice_lang = Locale.new(lang.code).language.code
       classes = ""
-      classes << "current " if lang.code == Locale.active.code
+      classes << "current " if lang.code == I18n.locale.to_s
       classes << "first" if lang == langs.first
       classes.strip!
       css_class = classes.blank? ? '' : " class=\"#{classes}\"" 
@@ -39,7 +37,7 @@ module SiteLanguageTags
       else
         domain = "http://#{lang.domain}"
       end
-      link = (lang.code == Locale.active.code) ? nice_lang : "<a href=\"#{domain}#{tag.locals.page.translated_url(lang.code)}\">#{nice_lang}</a>"
+      link = (lang.code == I18n.locale.to_s) ? lang : "<a href=\"#{domain}#{tag.locals.page.translated_url(lang.code)}\">#{lang}</a>"
       o += "\t<li#{css_class}>#{link}</li>\n"
     end
     codes = SiteLanguage.codes
@@ -51,7 +49,7 @@ module SiteLanguageTags
   end
   
   tag 'langcode' do |tag|
-    (Locale.active || Locale.base_language).language.code
+    I18n.locale.to_s
   end
   
   # Hacked standard_tags
@@ -77,7 +75,7 @@ module SiteLanguageTags
     attributes = " #{attributes}" unless attributes.empty?
     text = tag.double? ? tag.expand : tag.render('title')
     if defined?(SiteLanguage) && SiteLanguage.count > 0
-      %{<a href="/#{(Locale.active || Locale.base_language).language.code}#{tag.render('url')}#{anchor}"#{attributes}>#{text}</a>}
+      %{<a href="/#{(I18n.locale.to_s)}#{tag.render('url')}#{anchor}"#{attributes}>#{text}</a>}
     else
       %{<a href="#{tag.render('url')}#{anchor}"#{attributes}>#{text}</a>}
     end
@@ -96,7 +94,7 @@ module SiteLanguageTags
     breadcrumbs = [page.breadcrumb]
     page.ancestors.each do |ancestor|
       if defined?(SiteLanguage) && SiteLanguage.count > 0
-        breadcrumbs.unshift %{<a href="/#{(Locale.active || Locale.base_language).language.code}#{ancestor.url}">#{ancestor.breadcrumb}</a>}
+        breadcrumbs.unshift %{<a href="/#{I18n.locale.to_s}#{ancestor.url}">#{ancestor.breadcrumb}</a>}
       else
         breadcrumbs.unshift %{<a href="#{ancestor.url}">#{ancestor.breadcrumb}</a>}
       end

@@ -50,7 +50,7 @@ module SiteLanguage::PageExtensions
   end
   
   def translated_url(langcode)
-    cur_lang = (Locale.active || Locale.base_language).code
+    cur_lang = I18n.locale.to_s
     if self.class_name.eql?("RailsPage") # (from the share_layouts extension)
       r = "/#{langcode}/#{self.url[3..-1]}"
     else
