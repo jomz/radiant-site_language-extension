@@ -5,7 +5,7 @@
     - render_region :form do |form|
       - form.edit_title do
         %p.title
-          %label{:for=>"snippet_name"}= Name
+          %label{:for=>"snippet_name"} Name
           = f.text_field :name, :class => 'textbox', :maxlength => 100
       - form.edit_content do
         %p.content
