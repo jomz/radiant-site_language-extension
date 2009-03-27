@@ -9,11 +9,11 @@
           = f.text_field :name, :class => 'textbox', :maxlength => 100
       - form.edit_content do
         %p.content
-          %label{:for=>"snippet_content"}= Content
+          %label{:for=>"snippet_content"} Content
           ~ f.text_area :content, :class => "textarea", :style => "width: 100%", :value => @snippet.content
       - form.edit_filter do
         %p
-          %label{:for=>"snippet_filter"}= Filter
+          %label{:for=>"snippet_filter"} Filter
           = f.select :filter_id, [['None', '']] + TextFilter.descendants.map { |f| f.filter_name }.sort, :id => 'snippet_filter'
       - form.edit_timestamp do
         = updated_stamp @snippet
