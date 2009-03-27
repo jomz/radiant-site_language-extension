@@ -33,11 +33,11 @@
             %p
               %label{:for=>"page_layout_id"}
                 Layout
-              = fields.select :layout_id, [[Inherit, '']] + Layout.find(:all).map { |s| [s.name, s.id] }
+              = fields.select :layout_id, [['Inherit', '']] + Layout.find(:all).map { |s| [s.name, s.id] }
             %p
               %label{:for=>"page_class_name"}
                 Page type
-              = fields.select :class_name, [[Normal, '']] + Page.descendants.map { |p| [p.display_name, p.name] }.sort_by { |p| p.first }
+              = fields.select :class_name, [['Normal', '']] + Page.descendants.map { |p| [p.display_name, p.name] }.sort_by { |p| p.first }
             %p
               %label{:for=>"page_status_id"}
                 Status
