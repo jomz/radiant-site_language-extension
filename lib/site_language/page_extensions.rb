@@ -36,7 +36,7 @@ module SiteLanguage::PageExtensions
           @page_parts.each do |p|
             p.save!
             old_part = self.parts_without_pending.select{|op| op.name == p.name}.first
-            PagePartTranslation.find_all_by_page_part_id(old_part.id).each{|transl| transl.update_attribute(:page_part_id, p.id)} if old_part
+            PagePartTranslation.find_all_by_page_part_id(old_part.id).each{|transl| transl.update_attributes(:page_part_id => p.id, :content => p.content)} if old_part
             parts_to_be_saved << p
           end
           self.parts_without_pending.clear
