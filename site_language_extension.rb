@@ -1,6 +1,5 @@
 # Uncomment this if you reference any of your controllers in activate
 require_dependency 'application'
-include Globalize
 
 class SiteLanguageExtension < Radiant::Extension
   version "2.0"
