@@ -17,7 +17,7 @@ module SiteLanguage::ControllerExtensions
         
         def update
           current_locale = I18n.locale
-          I18n.locale = params[:language].to_sym || SiteLanguage.default.to_sym
+          I18n.locale = (params[:language]||SiteLanguage.default).to_sym
           params[model_symbol].each {|k,v| model.send("#{k}=", v)}
           model.save!
           I18n.locale = current_locale
