@@ -5,7 +5,7 @@ class SiteLanguage < ActiveRecord::Base
     end
 
     def default
-      'en'
+      Radiant::Config['site_language.default_language'] || 'en'
     end
   end
   
