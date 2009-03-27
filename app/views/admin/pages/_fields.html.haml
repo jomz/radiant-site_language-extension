@@ -6,7 +6,7 @@
     - form.edit_title do
       %p.title
         %label{:for=>"page_title"}
-          = t('views.pages.page_title')
+          Page Title
         = fields.text_field :title, :value => @page.title, :class => 'textbox', :maxlength => 255
     - form.edit_extended_metadata do
       #extended-metadata.row{meta_visible(:meta)}
@@ -16,15 +16,15 @@
       %p.more-or-less
         %small
           %a#more-extended-metadata{meta_visible(:meta_more), :href => "#", :onclick=>toggle_javascript_for('extended-metadata')}
-            = t('views.shared.more')    
+            More
           %a#less-extended-metadata{meta_visible(:meta_less), :href => "#", :onclick=>toggle_javascript_for('extended-metadata')}
-            = t('views.shared.less')    
+            Less
     - form.edit_page_parts do
       #tab-control
         #tabs.tabs
           #tab-toolbar
-            = link_to_function image('plus', :alt => 'plus'), 'toggle_add_part_popup()', :title => t('views.pages.add_tab')
-            = link_to_function image('minus', :alt => 'minus'), 'if(confirm(\'Delete the current tab?\')) { tabControl.removeTab(tabControl.selected) }', :title => t('views.pages.remove_tab')
+            = link_to_function image('plus', :alt => 'plus'), 'toggle_add_part_popup()', :title => 'Add tab'
+            = link_to_function image('minus', :alt => 'minus'), 'if(confirm(\'Delete the current tab?\')) { tabControl.removeTab(tabControl.selected) }', :title => 'Remove tab'
         #pages.pages
           = render :partial => 'admin/page_parts/page_part', :collection => @page.parts
       - render_region :parts_bottom do |parts_bottom|
@@ -32,20 +32,20 @@
           .row
             %p
               %label{:for=>"page_layout_id"}
-                = t('views.layouts.layout')
-              = fields.select :layout_id, [[t('select.inherit'), '']] + Layout.find(:all).map { |s| [s.name, s.id] }
+                Layout
+              = fields.select :layout_id, [[Inherit, '']] + Layout.find(:all).map { |s| [s.name, s.id] }
             %p
               %label{:for=>"page_class_name"}
-                = t('views.pages.page_type')  
-              = fields.select :class_name, [[t('select.normal'), '']] + Page.descendants.map { |p| [p.display_name, p.name] }.sort_by { |p| p.first }
+                Page type
+              = fields.select :class_name, [[Normal, '']] + Page.descendants.map { |p| [p.display_name, p.name] }.sort_by { |p| p.first }
             %p
               %label{:for=>"page_status_id"}
-                = t('views.pages.status')
+                Status
               = fields.select :status_id, Status.find_all.map { |s| [s.name, s.id] }, {}
             - if @config['page.edit.published_date?']
               %p#publication-date{:style => "display: none"}
                 %label{:for=>"page_published_at"}
-                  = t('views.pages.published_at')
+                  Published at
                 = fields.datetime_select :published_at, :disabled => true
             = render_region :layout_row, :locals => {:f => fields}
           %span.clear &nbsp;
@@ -58,5 +58,5 @@
     %p.buttons
       = save_model_button(@page)
       = save_model_and_continue_editing_button(@page)
-      = t('views.shared.or')
-      = link_to t('views.shared.cancel'), admin_pages_url
+      or
+      = link_to 'Cancel', admin_pages_url
