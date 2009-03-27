@@ -1,8 +1,13 @@
 = Site Language
 
-THIS EXTENSION IS NOT WORKING AT THE MOMENT.
+Uses Globalize2 to let you translate pages, page parts and snippets.
+You need to be on rails 2.2, which means Radiant edge at the moment, so you'll need to
+
+  rake radiant:freeze:edge
+ 
 If you are still working with Radiant < 0.7, you can check out
 http://github.com/jomz/site_language/commits/pre-radiant-0.7
+This version still works with the original globalize, but stopped working after 0.6.9.
 
 Allows you to translate pages (title, slug, keywords, ...), page parts and snippets, using the globalize plugin.
 

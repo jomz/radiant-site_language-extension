@@ -1,0 +1,3 @@
+[submodule "vendor/plugins/globalize2"]
+	path = vendor/plugins/globalize2
+	url = git://github.com/joshmh/globalize2.git

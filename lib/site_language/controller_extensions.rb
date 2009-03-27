@@ -5,18 +5,28 @@ module SiteLanguage::ControllerExtensions
     def self.included(base)
       base.class_eval do
         
-        def load_model
+        def load_model # edit
+          current_locale = I18n.locale
           self.model = if params[:id]
-            #debugger
-            Locale.set(params[:language] || SiteLanguage.default)
+            I18n.locale = (params[:language] || SiteLanguage.default).to_sym
             model_class.find(params[:id])
           else
             model_class.new
           end
         end
         
+        def update
+          current_locale = I18n.locale
+          I18n.locale = params[:language].to_sym || SiteLanguage.default.to_sym
+          params[model_symbol].each {|k,v| model.send("#{k}=", v)}
+          model.save!
+          I18n.locale = current_locale
+          announce_saved
+          response_for :update
+        end
+        
         protected
-  
+        
         def continue_url(options)
           options[:redirect_to] || if params[:continue] && SiteLanguage.count > 0
             {:action => 'edit', :id => model.id, :language => (params[:language] || SiteLanguage.default)}
@@ -68,10 +78,11 @@ module SiteLanguage::ControllerExtensions
         end
         
         def set_language
-          (redirect_to :language => SiteLanguage.default, 
-            :url => (params[:url] unless params[:url] == '/'),
-            :status=>301
-            ) unless Locale.set(params[:language]) || SiteLanguage.count < 1
+          if params[:language]
+            I18n.locale = params[:language].to_sym
+          else
+            redirect_to :language => SiteLanguage.default, :url => (params[:url] unless params[:url] == '/'), :status => 301
+          end
         end
       end
     end
