@@ -7,8 +7,8 @@ class WriteDefaultTranslations < ActiveRecord::Migration
       page.save
     end
     
-    PagePart.find(:all).each  { |part|    part.content    = part.read_attribute(:content) }
-    Snippet.find(:all).each   { |snippet| snippet.content = snippet.read_attribute(:content) }
+    PagePart.find(:all).each  { |part|    part.content    = part.read_attribute(:content); part.save! }
+    Snippet.find(:all).each   { |snippet| snippet.content = snippet.read_attribute(:content); snippet.save! }
   end
 
   def self.down
