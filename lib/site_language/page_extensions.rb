@@ -50,6 +50,12 @@ module SiteLanguage::PageExtensions
         true
       end 
       
+      def set_required_fields_from_default
+        %w(slug title breadcrumb).each do |key|
+          self.send("#{key}=", self.read_attribute(key))
+        end
+        save!
+      end
     end
   end
   
