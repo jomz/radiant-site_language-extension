@@ -1,2 +1,6 @@
-- form_for :page, :url => translated_admin_page_edit_url(:id => @page.id, :language => (params[:language]||SiteLanguage.default), :action => 'update'), :html => {:method => :put, :multipart => true, :id => 'edit_page'} do |fields|
-  = render :partial => "fields", :object => fields
+- if @page.new_record?
+  - form_for :page, @page, :url => admin_pages_path, :html => {:id => 'new_page', :multipart => true} do |f|
+    = render :partial => "fields", :object => f
+- else
+  - form_for :page, :url => translated_admin_page_edit_url(:id => @page.id, :language => (params[:language]||SiteLanguage.default), :action => 'update'), :html => {:method => :put, :multipart => true, :id => 'edit_page'} do |fields|
+    = render :partial => "fields", :object => fields
