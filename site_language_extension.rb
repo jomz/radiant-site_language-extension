@@ -11,8 +11,8 @@ class SiteLanguageExtension < Radiant::Extension
       admin.resources :site_languages
     end
     
-    map.translated_admin_page_edit 'admin/pages/:action/:id/:language', :controller => 'admin/pages'
-    map.translated_admin_snippet_edit 'admin/snippets/:action/:id/:language', :controller => 'admin/snippets'
+    map.translated_admin_page_edit 'admin/pages/:action/:id/:language', :controller => 'admin/pages', :id => /[0-9]+/, :action => /[a-z]+/
+    map.translated_admin_snippet_edit 'admin/snippets/:action/:id/:language', :controller => 'admin/snippets', :id => /[0-9]+/, :action => /[a-z]+/
     begin
       SiteLanguage.codes.each do |code|
         map.connect "#{code.to_s}/*url", :controller => 'site', :action => 'show_page', :language => code
@@ -51,6 +51,8 @@ class SiteLanguageExtension < Radiant::Extension
     Snippet.class_eval do
       translates :content
     end
+    
+    Radiant::Config['page.edit.published_date?'] = false # otherwise gives error on page save..
   end
   
   def deactivate
