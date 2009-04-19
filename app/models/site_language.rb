@@ -9,8 +9,8 @@ class SiteLanguage < ActiveRecord::Base
     end
   end
   
-  def validate
-    errors.add("code", "has invalid format. Valid examples are 'nl-BE' and 'en-US'") if code !~ /^[a-zA-Z0-9\-]+$/
+  def to_sym
+    code.to_sym
   end
   
 end
