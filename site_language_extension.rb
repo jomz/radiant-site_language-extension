@@ -3,7 +3,7 @@ require_dependency 'application'
 require 'i18n_ext'
 
 class SiteLanguageExtension < Radiant::Extension
-  version "2.0"
+  version "2.1"
   description "Habla Nederlands, sir? Si oder non?"
   url "http://openminds.be/"
   
