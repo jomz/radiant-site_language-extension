@@ -1,10 +1,6 @@
 = Site Language
 
 Uses Globalize2 to let you translate pages, page parts and snippets.
-You need to be on rails 2.2, which means Radiant edge at the moment, so you'll need to
-
-  rake radiant:freeze:edge
- 
 If you are still working with Radiant < 0.7, you can check out
 http://github.com/jomz/site_language/commits/pre-radiant-0.7
 This version still works with the original globalize, but stopped working after 0.6.9.
@@ -13,25 +9,29 @@ Allows you to translate pages (title, slug, keywords, ...), page parts and snipp
 
 == Installation:
 
-1. Install the globalize plugin, preferably from http://github.com/jomz/globalize/tree/master
-2. run
-  
-  rake globalize:setup
+1. You need to be on rails 2.2, which means Radiant edge at the moment, so you'll need to
 
-3. If you have not installed the extension yet, do a
+  rake radiant:freeze:edge
+  
+2. If you have not installed the extension yet, do a
 
-  rake ray:ext name=site_language full_name=site_language hub=jomz
+  rake ray:ext name=site_language hub=jomz
   
-  or
+or
   
-  git submodule add git://github.com/jomz/site_language.git vendor/extensions
-  
-4. Set Radiant::Config["site_language.default_language"] = 'en' or whatever will be the base language of the site.
-This means that when you create a new page, it will be saved as the version for that language.
-When somebody visits an untranslated page, he will also get this default version.
-Beware: changing the default language after you started translating stuff is a big no-no!
+  git submodule add git://github.com/jomz/radiant-site_language-extension.git vendor/extensions
 
-5. run
+3. cd into the site_language folder to init and update the globalize2 submodule;
+
+  cd vendor/extensions/site_language
+  git submodule init; git submodule update
+  cd ../../..
+  
+4. If you do not want English to be the default language, set the default language like so:
+
+  Radiant::Config["site_language.default_language"] = 'fr'
+  
+5. Run the migrations and update tasks
 
   rake db:migrate:extensions
   
@@ -62,3 +62,9 @@ Will provide the translated slug of a page
 == Overridden tags:
 
 <r:link /> and <r:breadcrumbs/> have been made site_language-aware
+
+Beware that you may have other extensions that also override these tags, i.e. the trike_tags extension.
+This would result in r:link tags not prefixing the link with the language part, i.e. /about-us instead of /en/about-us
+If this is the case, you'll want to make sure that the site_language is loaded after other extensions that override the standard tags. You can change the load order for extensions in config/environment.rb;
+
+  config.extensions = [ :all, :site_language ]
