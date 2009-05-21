@@ -4,9 +4,7 @@ module SiteLanguage::ControllerExtensions
     
     def self.included(base)
       base.class_eval do
-        
         def load_model # edit
-          current_locale = I18n.locale
           self.model = if params[:id]
             I18n.locale = (params[:language] || SiteLanguage.default).to_sym
             model_class.find(params[:id])
@@ -16,11 +14,10 @@ module SiteLanguage::ControllerExtensions
         end
         
         def update
-          current_locale = I18n.locale
           I18n.locale = (params[:language]||SiteLanguage.default).to_sym
           params[model_symbol].each {|k,v| model.send("#{k}=", v)}
           model.save!
-          I18n.locale = current_locale
+          I18n.locale = SiteLanguage.default
           announce_saved
           response_for :update
         end
@@ -35,7 +32,12 @@ module SiteLanguage::ControllerExtensions
             end
         end
         
+        def set_language
+          I18n.locale = SiteLanguage.default
+        end
+        
       end
+      base.before_filter :set_language, :only => [:index, :create, :new]
     end
     
   end

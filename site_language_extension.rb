@@ -1,5 +1,6 @@
 # Uncomment this if you reference any of your controllers in activate
 require_dependency 'application'
+require 'i18n_ext'
 
 class SiteLanguageExtension < Radiant::Extension
   version "2.0"
@@ -34,7 +35,8 @@ class SiteLanguageExtension < Radiant::Extension
     admin.page.edit.add :main, 'page_edit_form_with_translated_target_url', :before => 'edit_form'
     admin.page.edit.main.delete('edit_form')
     
-    Admin::ResourceController.send :include, SiteLanguage::ControllerExtensions::ResourceControllerExtensions
+    Admin::PagesController.send :include, SiteLanguage::ControllerExtensions::ResourceControllerExtensions
+    Admin::SnippetsController.send :include, SiteLanguage::ControllerExtensions::ResourceControllerExtensions
     SiteController.send :include, SiteLanguage::ControllerExtensions::SiteControllerExtensions
     
     Page.send :include, SiteLanguage::PageExtensions
@@ -53,6 +55,7 @@ class SiteLanguageExtension < Radiant::Extension
     end
     
     Radiant::Config['page.edit.published_date?'] = false # otherwise gives error on page save..
+    I18n.fallbacks.defaults = [SiteLanguage.default] | SiteLanguage.codes
   end
   
   def deactivate
