@@ -55,7 +55,7 @@ class SiteLanguageExtension < Radiant::Extension
     end
     
     Radiant::Config['page.edit.published_date?'] = false # otherwise gives error on page save..
-    I18n.fallbacks.defaults = [SiteLanguage.default] | SiteLanguage.codes
+    I18n.fallbacks.defaults = [SiteLanguage.default] | SiteLanguage.codes rescue ['en'] 
   end
   
   def deactivate
