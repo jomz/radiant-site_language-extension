@@ -3,7 +3,7 @@
     - if simple
       = icon
       = node_title
-    - else
+    - elsif Page === page
       = expander
       = icon
       = node_title
@@ -11,3 +11,8 @@
         %small= link_to(l, translated_admin_page_edit_url(:id => page.id, :language => l, :action => 'edit'))
       = page_type
       = spinner
+    - else
+      = expander + link_to("#{icon} #{node_title}", page_edit_url(:id => page), :title => page.url)
+      = page_type
+      = spinner
+      
