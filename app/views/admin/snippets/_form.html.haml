@@ -1,4 +1,6 @@
-- form_for :snippet, @snippet, :url => translated_admin_snippet_edit_url(:id => @snippet.id, :language => (params[:language]||SiteLanguage.default), :action => 'update') do |f|
+- url = @snippet.new_record? ? admin_snippets_url : translated_admin_snippet_edit_url(:id => @snippet.id, :language => (params[:language]||SiteLanguage.default))
+
+- form_for :snippet, @snippet, :url => url do |f|
   = f.hidden_field :lock_version
   = render_region :form_top
   .form-area
